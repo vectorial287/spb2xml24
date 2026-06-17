@@ -1,0 +1,5 @@
+# Normalise line endings to LF for text files
+* text=auto eol=lf
+
+# Treat the embedded table as binary
+*.bin -text

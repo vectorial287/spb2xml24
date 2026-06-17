@@ -1,0 +1,12 @@
+# Build output
+/target
+
+# Backup and debug files
+**/*.rs.bk
+*.pdb
+
+# Editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
