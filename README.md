@@ -10,10 +10,9 @@ underlying document can be read, diffed and studied.
 
 It is a ground up Rust reimplementation that builds on
 [leppie/spb2xml](https://github.com/leppie/spb2xml), a C# decompiler for MSFS
-2020 (itself derived from lc0277's original Flight Simulator X tool). The 2024
-file format records a per property value size that earlier tools discarded. That
-value is what lets `spb2xml24` decode the new "input pin" properties correctly,
-where a float is stored together with a source GUID. See
+2020. The 2024 file format records a per property value size that earlier tools
+discarded. That value is what lets `spb2xml24` decode the new "input pin"
+properties correctly, where a float is stored together with a source GUID. See
 [Relationship to leppie/spb2xml](#relationship-to-leppiespb2xml) for the full
 list of differences.
 
@@ -167,10 +166,9 @@ python tools/extract_textdecode.py path/to/TextDecode.Data.cs assets/textdecode.
 ## Relationship to leppie/spb2xml
 
 [leppie/spb2xml](https://github.com/leppie/spb2xml) is a C# decompiler for MSFS
-2020, building on lc0277's original Flight Simulator X tool. `spb2xml24` reuses
-its hard won knowledge of the format (header and tag layout, GUID handling, set
-framing, the coordinate and angle math, and the text decoding table) and adds
-support for the MSFS 2024 changes.
+2020. `spb2xml24` reuses its hard won knowledge of the format (header and tag
+layout, GUID handling, set framing, the coordinate and angle math, and the text
+decoding table) and adds support for the MSFS 2024 changes.
 
 What is new here:
 
@@ -192,7 +190,6 @@ What leppie/spb2xml still does that this tool does not:
 - [leppie/spb2xml](https://github.com/leppie/spb2xml) for the MSFS 2020 C#
   decompiler this work is based on, and in particular for `TextDecode.Data.cs`,
   the source of the embedded text decoding table in `assets/textdecode.bin`.
-- lc0277 for the original Flight Simulator X `spb2xml` tool.
 
 ## License
 
