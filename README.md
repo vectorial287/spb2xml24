@@ -1,5 +1,8 @@
 # spb2xml24
 
+[![CI](https://github.com/vectorial287/spb2xml24/actions/workflows/ci.yml/badge.svg)](https://github.com/vectorial287/spb2xml24/actions/workflows/ci.yml)
+[![Release](https://github.com/vectorial287/spb2xml24/actions/workflows/release.yml/badge.svg)](https://github.com/vectorial287/spb2xml24/actions/workflows/release.yml)
+
 A standalone command line tool that decompiles Microsoft Flight Simulator 2024
 compiled property files (`.spb`) back into readable XML.
 

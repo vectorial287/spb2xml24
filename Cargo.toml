@@ -6,7 +6,7 @@ rust-version = "1.74"
 description = "Decompile Microsoft Flight Simulator 2024 compiled SPB property files back to readable XML."
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/your-org/spb2xml24"
+repository = "https://github.com/vectorial287/spb2xml24"
 keywords = ["msfs", "flight-simulator", "spb", "decompiler", "xml"]
 categories = ["command-line-utilities", "parser-implementations"]
 
