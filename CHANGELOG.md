@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Single file and recursive directory conversion.
 - UTF-8 and Windows-1252 output encodings.
 - Library API exposing `convert`, `Bank`, `TextTable` and `Encoding`.
+- Case insensitive value type matching, covering mixed case propdef spellings
+  such as `Float` and `Bool`.
 
 ### Credits
 

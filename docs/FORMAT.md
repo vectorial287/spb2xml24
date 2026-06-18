@@ -102,6 +102,21 @@ For example a `FLOAT` property with a value size of 20 is a pin: a 16 byte GUID
 and one float, rendered as `{GUID},x.xxx`. A `FLOAT4` property with a value size
 of 28 is a pin with three floats, rendered as `{GUID},x.xxx,x.xxx,x.xxx`.
 
+## Type coverage
+
+Every value type used by a property in the MSFS 2024 Common propdefs is
+supported, including the full input pin family: `INPUTBOOL`, `INPUTLONG`,
+`INPUTULONG`, `INPUTVARIANT`, `INPUTFLOAT`, `INPUTFLOAT2`, `INPUTFLOAT3`,
+`INPUTCOLOR` and `OUTPUTVALUE`.
+
+Type names are matched case insensitively. The propdefs mix spellings such as
+`Float`, `Bool` and `Text` with the canonical upper case forms, and both resolve
+to the same type.
+
+`DISABLABLEFLOAT` and `DISABLABLEFLOAT3` are declared in the schema but are not
+referenced by any property in the propdefs, so they never appear in a compiled
+file and are not implemented.
+
 ## Text encoding
 
 `TEXT` and `MLTEXT` values use a position dependent substitution table. The

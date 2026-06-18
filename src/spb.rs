@@ -136,7 +136,9 @@ fn parse_property(
     parent: &mut Node,
     text: &TextTable,
 ) -> Result<()> {
-    let value = match prop.value_type.as_str() {
+    // Type names are matched case insensitively, since propdefs use spellings
+    // such as `Float` and `Bool` alongside the canonical upper case forms.
+    let value = match prop.value_type.to_ascii_uppercase().as_str() {
         "TEXT" | "MLTEXT" => {
             let len = read_len(reader)?;
             if len > 0 {

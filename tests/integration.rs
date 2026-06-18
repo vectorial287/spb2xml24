@@ -12,9 +12,9 @@ const PROPDEFS: &str = r#"<?xml version="1.0" encoding="utf-8"?>
 <SymbolDef name="Demo" id="{000000AA-0000-0000-0000-000000000000}">
   <PropertyDefs>
     <PropertyDef name="Ref"   id="{00000002-0000-0000-0000-000000000000}" type="GUID" xml_io="attribute"/>
-    <PropertyDef name="Scale" id="{00000003-0000-0000-0000-000000000000}" type="FLOAT"/>
+    <PropertyDef name="Scale" id="{00000003-0000-0000-0000-000000000000}" type="Float"/>
     <PropertyDef name="Rate"  id="{00000004-0000-0000-0000-000000000000}" type="FLOAT"/>
-    <PropertyDef name="Flag"  id="{00000005-0000-0000-0000-000000000000}" type="BOOL"/>
+    <PropertyDef name="Flag"  id="{00000005-0000-0000-0000-000000000000}" type="Bool"/>
   </PropertyDefs>
   <SetDefs>
     <SetDef name="Root" id="{00000001-0000-0000-0000-000000000000}"/>
