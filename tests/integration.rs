@@ -6,7 +6,7 @@
 
 use std::fs;
 
-use sbp2xml24::{convert, Bank, Encoding, TextTable};
+use spb2xml24::{convert, Bank, Encoding, TextTable};
 
 const PROPDEFS: &str = r#"<?xml version="1.0" encoding="utf-8"?>
 <SymbolDef name="Demo" id="{000000AA-0000-0000-0000-000000000000}">
@@ -97,7 +97,7 @@ fn converts_synthetic_document() {
     spb.i32(1).i32(body.len() as i32); // Root set tag + byte length
     spb.bytes.extend_from_slice(&body);
 
-    let dir = std::env::temp_dir().join("sbp2xml24_it_propdefs");
+    let dir = std::env::temp_dir().join("spb2xml24_it_propdefs");
     fs::create_dir_all(&dir).unwrap();
     fs::write(dir.join("demo.xml"), PROPDEFS).unwrap();
 

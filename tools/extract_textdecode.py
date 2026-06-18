@@ -2,8 +2,8 @@
 """Extract the MSFS text-encoding table into a compact binary asset.
 
 The simulator stores compiled text using a position dependent substitution
-table. The reference decompiler shipped that table as a generated C# source
-file (`TextDecode.cs`) holding 256 rows of the form:
+table. leppie/spb2xml (https://github.com/leppie/spb2xml) ships that table as a
+generated C# source file (`TextDecode.Data.cs`) holding 256 rows of the form:
 
     S[65] = new byte[250] { 107, 70, 106, ... };
 
@@ -13,7 +13,7 @@ records, one per source character code, each a little endian `u16` length
 followed by that many bytes.
 
 Usage:
-    python tools/extract_textdecode.py <TextDecode.cs> [output.bin]
+    python tools/extract_textdecode.py <TextDecode.Data.cs> [output.bin]
 """
 
 import re

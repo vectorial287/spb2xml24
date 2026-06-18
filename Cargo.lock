@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "sbp2xml24"
+name = "spb2xml24"
 version = "0.1.0"

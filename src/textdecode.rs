@@ -4,7 +4,8 @@
 //! where the cipher byte depends on both the source character and its position
 //! in the string (the position wraps every [`PERIOD`] characters). The lookup
 //! table is embedded from `assets/textdecode.bin`; see `tools/extract_textdecode.py`
-//! for how that asset is produced.
+//! for how that asset is produced. The table data originates from
+//! leppie/spb2xml (`TextDecode.Data.cs`): https://github.com/leppie/spb2xml
 
 use crate::error::{format_err, Result};
 

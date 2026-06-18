@@ -11,14 +11,14 @@
 //!
 //! ```no_run
 //! use std::path::Path;
-//! use sbp2xml24::{convert, Bank, Encoding, TextTable};
+//! use spb2xml24::{convert, Bank, Encoding, TextTable};
 //!
 //! let bank = Bank::load(Path::new("Propdefs/1.0/Common"))?;
 //! let text = TextTable::embedded();
 //! let spb = std::fs::read("effect.spb")?;
 //! let xml = convert(&spb, &bank, &text, Encoding::Utf8)?;
 //! std::fs::write("effect.xml", xml)?;
-//! # Ok::<(), sbp2xml24::Error>(())
+//! # Ok::<(), spb2xml24::Error>(())
 //! ```
 
 mod format;

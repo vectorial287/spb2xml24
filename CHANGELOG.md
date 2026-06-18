@@ -17,3 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Single file and recursive directory conversion.
 - UTF-8 and Windows-1252 output encodings.
 - Library API exposing `convert`, `Bank`, `TextTable` and `Encoding`.
+
+### Credits
+
+- Based on [leppie/spb2xml](https://github.com/leppie/spb2xml). The embedded
+  text decoding table is derived from its `TextDecode.Data.cs`.
+

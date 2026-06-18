@@ -3,16 +3,16 @@
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
-use sbp2xml24::{convert, Bank, Encoding, Result, TextTable};
+use spb2xml24::{convert, Bank, Encoding, Result, TextTable};
 
 const DEFAULT_PROPDEFS: &str =
     r"C:\XboxGames\Microsoft Flight Simulator 2024\Content\Propdefs\1.0\Common";
 
 const HELP: &str = "\
-sbp2xml24 - decompile MSFS 2024 SPB property files to XML
+spb2xml24 - decompile MSFS 2024 SPB property files to XML
 
 USAGE:
-    sbp2xml24 [OPTIONS] <input> [output]
+    spb2xml24 [OPTIONS] <input> [output]
 
 ARGS:
     <input>     An .spb file or a directory of .spb files
@@ -29,9 +29,9 @@ OPTIONS:
     -V, --version           Show version information
 
 EXAMPLES:
-    sbp2xml24 effect.spb
-    sbp2xml24 --propdefs \"D:\\Propdefs\\1.0\\Common\" effect.spb effect.xml
-    sbp2xml24 --recursive --out out_dir VisualEffectLib
+    spb2xml24 effect.spb
+    spb2xml24 --propdefs \"D:\\Propdefs\\1.0\\Common\" effect.spb effect.xml
+    spb2xml24 --recursive --out out_dir VisualEffectLib
 ";
 
 /// Parsed command line options.
@@ -130,7 +130,7 @@ fn execute(options: Options) -> Result<()> {
     let input = options.input.expect("input is present after parsing");
 
     let propdefs = options.propdefs.ok_or_else(|| {
-        sbp2xml24::Error::Propdefs("propdefs directory not set; pass --propdefs <dir>".to_string())
+        spb2xml24::Error::Propdefs("propdefs directory not set; pass --propdefs <dir>".to_string())
     })?;
 
     let bank = Bank::load(&propdefs)?;

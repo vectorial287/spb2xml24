@@ -1,17 +1,21 @@
-# sbp2xml24
+# spb2xml24
 
 A standalone command line tool that decompiles Microsoft Flight Simulator 2024
 compiled property files (`.spb`) back into readable XML.
 
 Flight Simulator stores effect graphs, scenery objects, missions and many other
 authored documents as compiled `SimBase` property banks. The compiler turns the
-original XML into a binary `.spb` file. `sbp2xml24` reverses that step so the
+original XML into a binary `.spb` file. `spb2xml24` reverses that step so the
 underlying document can be read, diffed and studied.
 
-This is a ground up Rust rewrite of the older `sbp2xml` tool. The 2024 file
-format records a per property value size that earlier tools discarded. That
-value is what lets `sbp2xml24` decode the new "input pin" properties correctly,
-where a float is stored together with a source GUID.
+It is a ground up Rust reimplementation that builds on
+[leppie/spb2xml](https://github.com/leppie/spb2xml), a C# decompiler for MSFS
+2020 (itself derived from lc0277's original Flight Simulator X tool). The 2024
+file format records a per property value size that earlier tools discarded. That
+value is what lets `spb2xml24` decode the new "input pin" properties correctly,
+where a float is stored together with a source GUID. See
+[Relationship to leppie/spb2xml](#relationship-to-leppiespb2xml) for the full
+list of differences.
 
 ## Features
 
@@ -25,7 +29,7 @@ where a float is stored together with a source GUID.
 ## Requirements
 
 The simulator's property definition files map each GUID to a readable name. They
-are not redistributed with this tool. Point `sbp2xml24` at the `Common` propdefs
+are not redistributed with this tool. Point `spb2xml24` at the `Common` propdefs
 folder from your Flight Simulator 2024 installation, for example:
 
 ```
@@ -43,26 +47,26 @@ Build a release binary with Cargo:
 cargo build --release
 ```
 
-The executable is written to `target/release/sbp2xml24`.
+The executable is written to `target/release/spb2xml24`.
 
 ## Usage
 
 Convert one file:
 
 ```
-sbp2xml24 effect.spb
+spb2xml24 effect.spb
 ```
 
 Convert one file to a named output:
 
 ```
-sbp2xml24 --propdefs "D:\Propdefs\1.0\Common" effect.spb effect.xml
+spb2xml24 --propdefs "D:\Propdefs\1.0\Common" effect.spb effect.xml
 ```
 
 Convert a directory tree and mirror it into an output folder:
 
 ```
-sbp2xml24 --recursive --out out_dir VisualEffectLib
+spb2xml24 --recursive --out out_dir VisualEffectLib
 ```
 
 ### Options
@@ -90,14 +94,14 @@ The crate also exposes a small API:
 
 ```rust
 use std::path::Path;
-use sbp2xml24::{convert, Bank, Encoding, TextTable};
+use spb2xml24::{convert, Bank, Encoding, TextTable};
 
 let bank = Bank::load(Path::new("Propdefs/1.0/Common"))?;
 let text = TextTable::embedded();
 let spb = std::fs::read("effect.spb")?;
 let xml = convert(&spb, &bank, &text, Encoding::Utf8)?;
 std::fs::write("effect.xml", xml)?;
-# Ok::<(), sbp2xml24::Error>(())
+# Ok::<(), spb2xml24::Error>(())
 ```
 
 ## How it works
@@ -118,7 +122,7 @@ The binary layout and the value size rule are documented in
 ## Project layout
 
 ```
-sbp2xml24/
+spb2xml24/
   Cargo.toml
   README.md
   CHANGELOG.md
@@ -153,12 +157,44 @@ cargo fmt             # format
 cargo clippy          # lint
 ```
 
-To regenerate the embedded text table from a `TextDecode.cs` source:
+To regenerate the embedded text table from a source file, such as
+`TextDecode.Data.cs` from [leppie/spb2xml](https://github.com/leppie/spb2xml):
 
 ```
-python tools/extract_textdecode.py path/to/TextDecode.cs assets/textdecode.bin
+python tools/extract_textdecode.py path/to/TextDecode.Data.cs assets/textdecode.bin
 ```
+
+## Relationship to leppie/spb2xml
+
+[leppie/spb2xml](https://github.com/leppie/spb2xml) is a C# decompiler for MSFS
+2020, building on lc0277's original Flight Simulator X tool. `spb2xml24` reuses
+its hard won knowledge of the format (header and tag layout, GUID handling, set
+framing, the coordinate and angle math, and the text decoding table) and adds
+support for the MSFS 2024 changes.
+
+What is new here:
+
+| Area | leppie/spb2xml | spb2xml24 |
+| --- | --- | --- |
+| Float input pins | Not decoded; the per tag value size is read as an "unknown flag" and discarded | Decoded using the value size, producing `{guid},value` for the new node graph pins |
+| Value types | `INPUTxxx`, `OUTPUTVALUE`, `BEZIERCURVE` and `FLOAT3` are not handled | Adds `FLOAT3`, `OUTPUTVALUE`, `BEZIERCURVE` and the full `INPUT*` family |
+| Output encoding | Windows-1252 only | UTF-8 (default) and Windows-1252 |
+| Runtime | Requires the .NET runtime | Single static binary, no runtime or dependencies |
+| Use as a library | CLI only | CLI plus a Rust crate API |
+
+What leppie/spb2xml still does that this tool does not:
+
+- Caches parsed propdefs to a `propdefs.cache` file between runs.
+- Accepts a model list (`-m`) to annotate model GUIDs with friendly names.
+
+## Credits
+
+- [leppie/spb2xml](https://github.com/leppie/spb2xml) for the MSFS 2020 C#
+  decompiler this work is based on, and in particular for `TextDecode.Data.cs`,
+  the source of the embedded text decoding table in `assets/textdecode.bin`.
+- lc0277 for the original Flight Simulator X `spb2xml` tool.
 
 ## License
 
 Released under the MIT License. See [LICENSE](LICENSE).
+

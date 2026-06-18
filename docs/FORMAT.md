@@ -111,4 +111,5 @@ terminator that decodes to the null character.
 
 The decoding table is shipped as `assets/textdecode.bin`, a sequence of 256
 records (one per source character code), each a little endian `u16` length
-followed by that many cipher bytes.
+followed by that many cipher bytes. The table data is derived from
+[leppie/spb2xml](https://github.com/leppie/spb2xml) (`TextDecode.Data.cs`).
