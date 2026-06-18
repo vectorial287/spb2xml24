@@ -27,6 +27,7 @@ mod reader;
 mod spb;
 
 pub mod error;
+pub mod locate;
 pub mod propdefs;
 pub mod textdecode;
 pub mod xml;

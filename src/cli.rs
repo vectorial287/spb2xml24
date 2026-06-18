@@ -5,9 +5,6 @@ use std::process::ExitCode;
 
 use spb2xml24::{convert, Bank, Encoding, Result, TextTable};
 
-const DEFAULT_PROPDEFS: &str =
-    r"C:\XboxGames\Microsoft Flight Simulator 2024\Content\Propdefs\1.0\Common";
-
 const HELP: &str = "\
 spb2xml24 - decompile MSFS 2024 SPB property files to XML
 
@@ -19,14 +16,18 @@ ARGS:
     [output]    Output file, or output directory when <input> is a directory
 
 OPTIONS:
-    -s, --propdefs <dir>    Propdefs directory. Defaults to the MSFS 2024
-                            Common propdefs when present.
+    -s, --propdefs <dir>    Propdefs directory. Auto-detected from the MSFS 2024
+                            install (Microsoft Store/Xbox or Steam) when omitted.
     -o, --out <path>        Output file or directory (same as the [output] arg)
     -e, --encoding <enc>    Output encoding: utf-8 (default) or windows-1252
     -r, --recursive         Recurse into subdirectories of a directory input
     -v, --verbose           Print each converted file
     -h, --help              Show this help
     -V, --version           Show version information
+
+ENVIRONMENT:
+    SPB2XML_PROPDEFS        Propdefs directory, used when --propdefs is omitted
+                            and taking precedence over auto-detection.
 
 EXAMPLES:
     spb2xml24 effect.spb
@@ -74,7 +75,7 @@ enum Outcome {
 }
 
 fn parse_args(args: &[String]) -> std::result::Result<Outcome, String> {
-    let mut propdefs = default_propdefs();
+    let mut propdefs = None;
     let mut out = None;
     let mut encoding = Encoding::Utf8;
     let mut recursive = false;
@@ -129,8 +130,11 @@ fn parse_args(args: &[String]) -> std::result::Result<Outcome, String> {
 fn execute(options: Options) -> Result<()> {
     let input = options.input.expect("input is present after parsing");
 
-    let propdefs = options.propdefs.ok_or_else(|| {
-        spb2xml24::Error::Propdefs("propdefs directory not set; pass --propdefs <dir>".to_string())
+    let propdefs = resolve_propdefs(options.propdefs).ok_or_else(|| {
+        spb2xml24::Error::Propdefs(
+            "could not locate the MSFS 2024 propdefs; pass --propdefs <dir> or set SPB2XML_PROPDEFS"
+                .to_string(),
+        )
     })?;
 
     let bank = Bank::load(&propdefs)?;
@@ -239,9 +243,20 @@ fn parse_encoding(value: &str) -> std::result::Result<Encoding, String> {
     }
 }
 
-fn default_propdefs() -> Option<PathBuf> {
-    let path = PathBuf::from(DEFAULT_PROPDEFS);
-    path.is_dir().then_some(path)
+/// Resolve the propdefs directory: an explicit `--propdefs`, then the
+/// `SPB2XML_PROPDEFS` environment variable, then auto-detection. The chosen
+/// directory is reported when it was not given on the command line.
+fn resolve_propdefs(explicit: Option<PathBuf>) -> Option<PathBuf> {
+    if let Some(dir) = explicit {
+        return Some(dir);
+    }
+    if let Some(dir) = std::env::var_os("SPB2XML_PROPDEFS").map(PathBuf::from) {
+        eprintln!("Using propdefs from SPB2XML_PROPDEFS: {}", dir.display());
+        return Some(dir);
+    }
+    let dir = spb2xml24::locate::find_propdefs()?;
+    eprintln!("Auto-detected propdefs: {}", dir.display());
+    Some(dir)
 }
 
 fn next<'a>(

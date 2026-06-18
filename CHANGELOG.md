@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Decompiler for Microsoft Flight Simulator 2024 compiled `.spb` property files.
 - Property definition loader that scans a propdefs directory and resolves GUIDs.
+- Automatic propdefs discovery on Windows for the Microsoft Store / Xbox and
+  Steam installs, with `--propdefs` and the `SPB2XML_PROPDEFS` environment
+  variable as overrides.
 - Support for the 2024 value size field, used to decode float input pins that
   store a source GUID alongside their floats.
 - Embedded text decoding table, so the binary has no runtime data dependencies.

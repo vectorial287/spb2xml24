@@ -31,15 +31,28 @@ list of differences.
 ## Requirements
 
 The simulator's property definition files map each GUID to a readable name. They
-are not redistributed with this tool. Point `spb2xml24` at the `Common` propdefs
-folder from your Flight Simulator 2024 installation, for example:
+are not redistributed with this tool; they come from your own Flight Simulator
+2024 installation, in a `Propdefs/1.0/Common` folder.
+
+`spb2xml24` finds them automatically on Windows for both the Microsoft Store /
+Xbox and Steam versions, including installs on a non default drive. It checks,
+in order:
+
+1. the `--propdefs <dir>` argument, if given;
+2. the `SPB2XML_PROPDEFS` environment variable, if set;
+3. auto-detection: every fixed drive's `XboxGames\Microsoft Flight Simulator
+   2024\Content\Propdefs\1.0\Common`, each Steam library (read from
+   `libraryfolders.vdf`), and the `InstalledPackagesPath` recorded in
+   `UserCfg.opt`.
+
+A candidate is only accepted if it actually contains `propbase.xml`. If
+auto-detection cannot find the propdefs (for example on a non Windows machine),
+pass the folder with `--propdefs`:
 
 ```
-C:\XboxGames\Microsoft Flight Simulator 2024\Content\Propdefs\1.0\Common
+spb2xml24 --propdefs "D:\Games\Microsoft Flight Simulator 2024\Content\Propdefs\1.0\Common" effect.spb
 ```
 
-When that default path exists it is used automatically. Otherwise pass the
-location with `--propdefs`.
 
 ## Installation
 
@@ -138,6 +151,7 @@ spb2xml24/
     cli.rs                Argument parsing and file traversal
     lib.rs                Library entry point and public API
     error.rs              Shared error type
+    locate.rs             Automatic propdefs discovery
     reader.rs             Little endian byte reader
     guid.rs               GUID formatting
     textdecode.rs         Text decoder over the embedded table
